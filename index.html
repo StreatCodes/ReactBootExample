@@ -9,6 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- React js -->
     <script src="https://fb.me/react-15.1.0.js"></script>
@@ -26,29 +27,62 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="container">
-            <h1>Search a movie</h1>
-            <p class="lead">
-                hello world
-            </p>
+    <div class="pageheader">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-10 col-md-11 col-sm-12">
+                        <h1>Reactjs &amp; bootstrap example</h1>
+                        <p class="lead">
+                            This application uses The Movie Database API to fetch real data of movies, tv shows and actors.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <form>
-            <fieldset class="form-group">
-                <input type="search" class="form-control" id="moveSearch" placeholder="Search for a movie, tv show or actor">
-            </fieldset>
         <div class="row">
-            <div class="col-lg-4 col-sm-2">
-                One of three columns
-            </div>
-            <div class="col-lg-4 col-sm-2">
-                One of three columns
-            </div>
-            <div class="col-lg-4 col-sm-2">
-                One of three columns
+            <div class="col-lg-10 col-md-11 col-sm-12">
+                <form>
+                    <fieldset class="form-group">
+                        <input type="search" class="form-control" id="moveSearch" placeholder="Search for a movie, tv show or actor">
+                    </fieldset>
+                </form>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card">
+                            <img class="card-img-top" data-src="..." alt="Card image cap">
+                            <div class="card-block">
+                                <h4 class="card-title">Card title</h4>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card">
+                            <img class="card-img-top" data-src="..." alt="Card image cap">
+                            <div class="card-block">
+                                <h4 class="card-title">Card title</h4>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card">
+                            <img class="card-img-top" data-src="..." alt="Card image cap">
+                            <div class="card-block">
+                                <h4 class="card-title">Card title</h4>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
