@@ -1,0 +1,6 @@
+.pageheader {
+    padding-top: 64px;
+    padding-bottom: 64px;
+    background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    margin-bottom: 20px;
+}
