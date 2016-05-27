@@ -8,7 +8,7 @@ var SearchBar = React.createClass({
         this.setState({ inputValue: event.target.value.substr(0, 140) });
         clearTimeout(this.searchTimeOut);
         this.searchTimeOut = setTimeout(function () {
-            this.setState({ searchValue: this.state.inputValue });console.log(this.state.searchValue);
+            this.setState({ searchValue: this.state.inputValue });
         }.bind(this), 300);
     },
     searchTimeOut: setTimeout(function () {}),
@@ -17,17 +17,13 @@ var SearchBar = React.createClass({
             'div',
             { className: 'col-lg-10 col-md-11 col-sm-12' },
             React.createElement(
-                'form',
-                null,
-                React.createElement(
-                    'fieldset',
-                    { className: 'form-group' },
-                    React.createElement('input', {
-                        type: 'search',
-                        value: this.state.inputValue,
-                        onChange: this.handleChange,
-                        className: 'form-control', placeholder: 'Search for a movie, tv show or actor' })
-                )
+                'fieldset',
+                { className: 'form-group' },
+                React.createElement('input', {
+                    type: 'search',
+                    value: this.state.inputValue,
+                    onChange: this.handleChange,
+                    className: 'form-control', placeholder: 'Search for a movie, tv show or actor' })
             ),
             React.createElement(SearchResults, { searchValue: this.state.searchValue })
         );
@@ -37,6 +33,21 @@ var SearchBar = React.createClass({
 var SearchResults = React.createClass({
     displayName: 'SearchResults',
 
+    getInitialState: function () {
+        return { searchResults: [], loading: false };
+    },
+    componentWillReceiveProps: function (nextProps) {
+        // this.setState({
+        //     likesIncreasing: nextProps.likeCount > this.props.likeCount
+        // });
+        console.log(nextProps.searchValue);
+    },
+    shouldComponentUpdate: function (nextProps, nextState) {
+        return nextProps.searchValue !== this.props.searchValue;
+    },
+    componentWillUpdate: function (newProps) {
+        //console.log("Search for: " + newProps.searchValue);
+    },
     render: function () {
         if (this.props.searchValue === "") {
             return React.createElement(
@@ -46,6 +57,16 @@ var SearchResults = React.createClass({
                     'h3',
                     null,
                     'Waiting for search input.'
+                )
+            );
+        } else if (this.state.loading) {
+            return React.createElement(
+                'div',
+                { style: { textAlign: 'center', color: 'rgb(180, 180, 180)' } },
+                React.createElement(
+                    'h3',
+                    null,
+                    'Loading...'
                 )
             );
         } else {
