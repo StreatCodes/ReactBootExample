@@ -5,7 +5,7 @@ var SearchBar = React.createClass({
     handleChange: function(event) {
         this.setState({inputValue: event.target.value.substr(0, 140)});
         clearTimeout(this.searchTimeOut);
-        this.searchTimeOut = setTimeout(function(){ this.setState({searchValue: this.state.inputValue}); }.bind(this), 300)
+        this.searchTimeOut = setTimeout(function(){ this.setState({searchValue: this.state.inputValue})}.bind(this), 300)
     },
     searchTimeOut: setTimeout(function(){}),
     render: function() {
@@ -26,19 +26,19 @@ var SearchBar = React.createClass({
 
 var SearchResults = React.createClass({
     getInitialState: function() {
-        return {searchResults: [], loading: false};
+        return {searchResults: [], loading: false, searchQuery: "EMPTY"};
     },
     componentWillReceiveProps: function(nextProps) {
-        // this.setState({
-        //     likesIncreasing: nextProps.likeCount > this.props.likeCount
-        // });
-        console.log(nextProps.searchValue);
+        if (nextProps.searchValue !== this.props.searchValue && nextProps.searchValue !== ""){
+            this.setState({loading: true, searchQuery: nextProps.searchValue});
+        }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-        return nextProps.searchValue !== this.props.searchValue;
+        return nextState.searchQuery !== this.state.searchQuery;
     },
-    componentWillUpdate: function(newProps) {
-        //console.log("Search for: " + newProps.searchValue);
+    componentWillUpdate: function(nextProps, nextState) {
+        //AJAX REQUEST HERE.
+        console.log("Search for: " + nextState.searchQuery);
     },
     render: function() {
         if(this.props.searchValue === ""){

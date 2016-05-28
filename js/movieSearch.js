@@ -34,19 +34,19 @@ var SearchResults = React.createClass({
     displayName: 'SearchResults',
 
     getInitialState: function () {
-        return { searchResults: [], loading: false };
+        return { searchResults: [], loading: false, searchQuery: "EMPTY" };
     },
     componentWillReceiveProps: function (nextProps) {
-        // this.setState({
-        //     likesIncreasing: nextProps.likeCount > this.props.likeCount
-        // });
-        console.log(nextProps.searchValue);
+        if (nextProps.searchValue !== this.props.searchValue && nextProps.searchValue !== "") {
+            this.setState({ loading: true, searchQuery: nextProps.searchValue });
+        }
     },
     shouldComponentUpdate: function (nextProps, nextState) {
-        return nextProps.searchValue !== this.props.searchValue;
+        return nextState.searchQuery !== this.state.searchQuery;
     },
-    componentWillUpdate: function (newProps) {
-        //console.log("Search for: " + newProps.searchValue);
+    componentWillUpdate: function (nextProps, nextState) {
+        //AJAX REQUEST HERE.
+        console.log("Search for: " + nextState.searchQuery);
     },
     render: function () {
         if (this.props.searchValue === "") {
@@ -122,4 +122,4 @@ var MovieCard = React.createClass({
 });
 
 ReactDOM.render(React.createElement(SearchBar, null), document.getElementById('movie-search'));
-//# sourceMappingURL=C:\Users\mattr\websites\ReactBootExample\js\movieSearch.js.map
+//# sourceMappingURL=/Users/matt/Documents/ReactBootExample/js/movieSearch.js.map
