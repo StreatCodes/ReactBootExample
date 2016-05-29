@@ -47,6 +47,12 @@ var SearchResults = React.createClass({
     componentWillUpdate: function (nextProps, nextState) {
         //AJAX REQUEST HERE.
         console.log("Search for: " + nextState.searchQuery);
+
+        var query = "http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&query=" + nextState.searchQuery;
+        $.getJSON(query, function (data) {
+            console.log(data);
+            this.setState({ loading: false, searchResults: data });
+        }.bind(this));
     },
     render: function () {
         if (this.props.searchValue === "") {
@@ -73,10 +79,7 @@ var SearchResults = React.createClass({
             return React.createElement(
                 'div',
                 { className: 'row' },
-                React.createElement(MovieCard, null),
-                React.createElement(MovieCard, null),
-                React.createElement(MovieCard, null),
-                React.createElement(MovieCard, null)
+                React.createElement(MovieCard, { name: 'Game of Thrones', rating: '8.9', backDrop: '', overView: 'Greate tv', type: 'TV', date: '2011' })
             );
         }
     }
@@ -99,12 +102,12 @@ var MovieCard = React.createClass({
                     React.createElement(
                         'h4',
                         { className: 'card-title' },
-                        'Card title'
+                        this.props.name
                     ),
                     React.createElement(
                         'p',
                         { className: 'card-text' },
-                        'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.'
+                        this.props.overView
                     ),
                     React.createElement(
                         'p',
@@ -112,7 +115,7 @@ var MovieCard = React.createClass({
                         React.createElement(
                             'small',
                             { 'class': 'text-muted' },
-                            'Last updated 3 mins ago'
+                            this.props.date
                         )
                     )
                 )
