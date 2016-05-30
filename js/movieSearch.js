@@ -75,7 +75,7 @@ var SearchResults = React.createClass({
     },
     componentWillReceiveProps: function (nextProps) {
         //If search value changed send movie api request and set loading to true.
-        if (nextProps.searchValue !== this.props.searchValue && nextProps.searchValue !== "" || this.props.selectValue !== nextProps.selectValue) {
+        if (nextProps.searchValue !== "" && (nextProps.searchValue !== this.props.searchValue || this.props.selectValue !== nextProps.selectValue)) {
             this.setState({ loading: true, searchQuery: nextProps.searchValue });
 
             //Setup url for search
@@ -103,6 +103,7 @@ var SearchResults = React.createClass({
 
             var query = baseURL + type + options + nextProps.searchValue;
 
+            console.log('Searching: ' + query);
             //Submit search query to The Movie Database servers
             $.getJSON(query, function (data) {
                 this.setState({ loading: false, searchResults: data });
