@@ -17,16 +17,60 @@ var SearchBar = React.createClass({
             'div',
             { className: 'col-lg-10 col-md-11 col-sm-12' },
             React.createElement(
-                'fieldset',
-                { className: 'form-group' },
-                React.createElement('input', {
-                    type: 'search',
+                'div',
+                { className: 'input-group', style: { marginBottom: '20px' } },
+                React.createElement('input', { type: 'search',
                     value: this.state.inputValue,
                     onChange: this.handleChange,
-                    className: 'form-control', placeholder: 'Search for a movie, tv show or actor' })
+                    className: 'form-control', placeholder: 'Search for a movie, tv show or actor' }),
+                React.createElement(
+                    'div',
+                    { className: 'input-group-btn' },
+                    React.createElement(
+                        'button',
+                        { type: 'button', className: 'btn btn-secondary dropdown-toggle', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
+                        'Anything'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'dropdown-menu dropdown-menu-right' },
+                        React.createElement(
+                            'a',
+                            { className: 'dropdown-item', href: '#' },
+                            'Anything'
+                        ),
+                        React.createElement(
+                            'a',
+                            { className: 'dropdown-item', href: '#' },
+                            'Movie'
+                        ),
+                        React.createElement(
+                            'a',
+                            { className: 'dropdown-item', href: '#' },
+                            'TV Show'
+                        ),
+                        React.createElement(
+                            'a',
+                            { className: 'dropdown-item', href: '#' },
+                            'Actors'
+                        )
+                    )
+                )
             ),
             React.createElement(SearchResults, { searchValue: this.state.searchValue })
-        );
+        )
+
+        /*<div className="col-lg-10 col-md-11 col-sm-12">
+            <fieldset className="form-group">
+                <input
+                    type="search"
+                    value={this.state.inputValue}
+                    onChange={this.handleChange}
+                    className="form-control" placeholder="Search for a movie, tv show or actor" />
+            </fieldset>
+            <SearchResults searchValue={this.state.searchValue}/>
+        </div>*/
+        ;
     }
 });
 
@@ -125,4 +169,4 @@ var MovieCard = React.createClass({
 });
 
 ReactDOM.render(React.createElement(SearchBar, null), document.getElementById('movie-search'));
-//# sourceMappingURL=/Users/matt/Documents/ReactBootExample/js/movieSearch.js.map
+//# sourceMappingURL=C:\Users\mattr\websites\ReactBootExample\js\movieSearch.js.map

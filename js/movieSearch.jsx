@@ -10,16 +10,37 @@ var SearchBar = React.createClass({
     searchTimeOut: setTimeout(function(){}),
     render: function() {
     return (
-        <div className="col-lg-10 col-md-11 col-sm-12">
-            <fieldset className="form-group">
-                <input
-                    type="search"
-                    value={this.state.inputValue}
-                    onChange={this.handleChange}
-                    className="form-control" placeholder="Search for a movie, tv show or actor" />
-            </fieldset>
-            <SearchResults searchValue={this.state.searchValue}/>
-        </div>
+            <div className="col-lg-10 col-md-11 col-sm-12">
+                <div className="input-group" style={{marginBottom: '20px'}}>
+                    <input type="search"
+                        value={this.state.inputValue}
+                        onChange={this.handleChange}
+                        className="form-control" placeholder="Search for a movie, tv show or actor" />
+                    <div className="input-group-btn">
+                        <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Anything
+                        </button>
+                        <div className="dropdown-menu dropdown-menu-right">
+                            <a className="dropdown-item" href="#">Anything</a>
+                            <a className="dropdown-item" href="#">Movie</a>
+                            <a className="dropdown-item" href="#">TV Show</a>
+                            <a className="dropdown-item" href="#">Actors</a>
+                        </div>
+                    </div>
+                </div>
+                <SearchResults searchValue={this.state.searchValue}/>
+            </div>
+
+                /*<div className="col-lg-10 col-md-11 col-sm-12">
+                    <fieldset className="form-group">
+                        <input
+                            type="search"
+                            value={this.state.inputValue}
+                            onChange={this.handleChange}
+                            className="form-control" placeholder="Search for a movie, tv show or actor" />
+                    </fieldset>
+                    <SearchResults searchValue={this.state.searchValue}/>
+                </div>*/
         );
     }
 });

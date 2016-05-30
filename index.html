@@ -46,12 +46,21 @@
 
     <div class="container">
         <div class="row" id="movie-search">
-            <div class="col-lg-10 col-md-11 col-sm-12">
-                <form>
-                    <fieldset class="form-group">
+            <div class="col-lg-10 col-md-11 col-sm-12" style="box-sizing: border-box;">
+                    <div class="input-group" style="margin-bottom: 20px;">
                         <input type="search" class="form-control" placeholder="Search for a movie, tv show or actor">
-                    </fieldset>
-                </form>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Anything
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Anything</a>
+                                <a class="dropdown-item" href="#">Movie</a>
+                                <a class="dropdown-item" href="#">TV Show</a>
+                                <a class="dropdown-item" href="#">Actors</a>
+                            </div>
+                        </div>
+                    </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card">
