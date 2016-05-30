@@ -1,12 +1,11 @@
-When user types in search box, wait 100-200ms for no new characters then search query
-Create card component with search results in
-Grab image for each card
+Make search dropdown work
+Change search query based on dropdown
 Add loading swirl when search request has been sent until response
 Adjust URL when search result received
 
 Link to github
 About section as Bootstrap tooltip
-Adjust heading size for smaller devices
+Adjust heading text size for smaller devices
 
 Example query:
 http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&query=Game%20of

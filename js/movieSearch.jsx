@@ -1,11 +1,16 @@
 var SearchBar = React.createClass({
     getInitialState: function() {
-        return {inputValue: '', searchValue: ''};
+        return {inputValue: '', searchValue: '', selectValue: 'All'};
     },
     handleChange: function(event) {
         this.setState({inputValue: event.target.value.substr(0, 140)});
         clearTimeout(this.searchTimeOut);
         this.searchTimeOut = setTimeout(function(){ this.setState({searchValue: this.state.inputValue})}.bind(this), 300)
+    },
+    handleSelect: function(event) {
+        if(this.state.selectValue !== event.target.innerHTML){
+            this.setState({selectValue: event.target.innerHTML});
+        }
     },
     searchTimeOut: setTimeout(function(){}),
     render: function() {
@@ -18,29 +23,18 @@ var SearchBar = React.createClass({
                         className="form-control" placeholder="Search for a movie, tv show or actor" />
                     <div className="input-group-btn">
                         <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Anything
+                            {this.state.selectValue}
                         </button>
                         <div className="dropdown-menu dropdown-menu-right">
-                            <a className="dropdown-item" href="#">Anything</a>
-                            <a className="dropdown-item" href="#">Movie</a>
-                            <a className="dropdown-item" href="#">TV Show</a>
-                            <a className="dropdown-item" href="#">Actors</a>
+                            <a className="dropdown-item" onClick={this.handleSelect}>All</a>
+                            <a className="dropdown-item" onClick={this.handleSelect}>Movie</a>
+                            <a className="dropdown-item" onClick={this.handleSelect}>TV Show</a>
+                            <a className="dropdown-item" onClick={this.handleSelect}>Actors</a>
                         </div>
                     </div>
                 </div>
                 <SearchResults searchValue={this.state.searchValue}/>
             </div>
-
-                /*<div className="col-lg-10 col-md-11 col-sm-12">
-                    <fieldset className="form-group">
-                        <input
-                            type="search"
-                            value={this.state.inputValue}
-                            onChange={this.handleChange}
-                            className="form-control" placeholder="Search for a movie, tv show or actor" />
-                    </fieldset>
-                    <SearchResults searchValue={this.state.searchValue}/>
-                </div>*/
         );
     }
 });
@@ -50,23 +44,23 @@ var SearchResults = React.createClass({
         return {searchResults: [], loading: false, searchQuery: "EMPTY"};
     },
     componentWillReceiveProps: function(nextProps) {
+        //If search value changed send movie api request and set loading to true.
         if (nextProps.searchValue !== this.props.searchValue && nextProps.searchValue !== ""){
             this.setState({loading: true, searchQuery: nextProps.searchValue});
-        }
-    },
-    shouldComponentUpdate: function(nextProps, nextState) {
-        return nextState.searchQuery !== this.state.searchQuery;
-    },
-    componentWillUpdate: function(nextProps, nextState) {
-        //AJAX REQUEST HERE.
-        console.log("Search for: " + nextState.searchQuery);
 
-        var query = "http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&query=" + nextState.searchQuery;
+            var query = "http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&language=en&query=" + nextProps.searchValue;
             $.getJSON( query, function( data ) {
                 console.log(data);
                 this.setState({loading: false, searchResults: data});
             }.bind(this));
-
+        }
+    },
+    shouldComponentUpdate: function(nextProps, nextState) {
+        //only update if searchQuery or loading value has changed.
+        return  nextState.searchQuery !== this.state.searchQuery ||
+                nextState.loading !== this.state.loading;
+    },
+    componentWillUpdate: function(nextProps, nextState) {
     },
     render: function() {
         if(this.props.searchValue === ""){
@@ -85,9 +79,11 @@ var SearchResults = React.createClass({
         }
         else {
             return (
-            <div className="row">
-                <MovieCard name="Game of Thrones" rating="8.9" backDrop="" overView="Greate tv" type="TV" date="2011"/>
-            </div>
+                <div className="card-columns">
+                    {this.state.searchResults.results.map(function(result) {
+                        return <MovieCard key={result.id} data={result}/>;
+                    })}
+                </div>
             );
         }
     }
@@ -95,15 +91,14 @@ var SearchResults = React.createClass({
 
 var MovieCard = React.createClass({
     render: function() {
+        console.log(this.props.data);
         return (
-            <div className="col-lg-4 col-md-6 col-sm-12">
-                <div className="card">
-                    <img className="card-img-top" data-src="..." alt="Card image cap" />
-                    <div className="card-block">
-                        <h4 className="card-title">{this.props.name}</h4>
-                        <p className="card-text">{this.props.overView}</p>
-                        <p className="card-text"><small class="text-muted">{this.props.date}</small></p>
-                    </div>
+            <div className="card">
+                <img className="card-img-top" style={{width: '100%'}} src={this.props.data.backdrop_path ? "https://image.tmdb.org/t/p/w300/" + this.props.data.backdrop_path : 'images/NoImage.png'} alt="Card image cap" />
+                <div className="card-block">
+                    <h4 className="card-title">{this.props.data.name || this.props.data.title}</h4>
+                    <p className="card-text">{this.props.data.overview ? this.props.data.overview.substr(0, 120) + '...' : null}</p>
+                    <p className="card-text"><small class="text-muted">{this.props.data.first_air_date}</small></p>
                 </div>
             </div>
         );

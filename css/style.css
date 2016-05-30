@@ -1,6 +1,71 @@
 .pageheader {
-    padding-top: 64px;
-    padding-bottom: 64px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
     margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+@media (min-width: 34em) {
+    .pageheader {
+        padding-top: 24px;
+        padding-bottom: 24px;
+        background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+        margin-bottom: 20px;
+    }
+
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 48em) {
+    .pageheader {
+        padding-top: 36px;
+        padding-bottom: 36px;
+        background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+        margin-bottom: 20px;
+    }
+
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 62em) {
+    .pageheader {
+        padding-top: 48px;
+        padding-bottom: 48px;
+        background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+        margin-bottom: 20px;
+    }
+
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 75em) {
+    .pageheader {
+        padding-top: 64px;
+        padding-bottom: 64px;
+        background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+        margin-bottom: 20px;
+    }
+
+    .card-columns {
+        -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 3;
+    }
 }
