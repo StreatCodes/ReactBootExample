@@ -1,14 +1,8 @@
 Add loading swirl when search request has been sent until response
-Adjust URL when search result received
+
+Create modals when user clicks movie
 
 Move search query check from results to search bar
 Move select switch statement up to search bar???
-Link to github
-About section as Bootstrap tooltip
-Adjust heading text size for smaller devices
 
-Example query:
-http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&query=Game%20of
-
-Example image path:
-https://image.tmdb.org/t/p/w300/mUkuc2wyV9dHLG0D0Loaw5pO2s8.jpg
+Adjust URL when search result received

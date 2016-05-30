@@ -5,6 +5,9 @@ var SearchBar = React.createClass({
         return { inputValue: '', searchValue: '', selectValue: 'All' };
     },
     handleChange: function (event) {
+        //Cut user input to max length of 140 characters.
+        //Don't send API request until the user has stopped typing for 300ms
+        //This way we don't spam their servers every keystroke.
         this.setState({ inputValue: event.target.value.substr(0, 140) });
         clearTimeout(this.searchTimeOut);
         this.searchTimeOut = setTimeout(function () {
@@ -12,57 +15,61 @@ var SearchBar = React.createClass({
         }.bind(this), 300);
     },
     handleSelect: function (event) {
+        //Handles search bar dropdown menu.
         if (this.state.selectValue !== event.target.innerHTML) {
             this.setState({ selectValue: event.target.innerHTML });
         }
     },
     searchTimeOut: setTimeout(function () {}),
     render: function () {
-        return React.createElement(
-            'div',
-            { className: 'col-lg-10 col-md-11 col-sm-12' },
+        return(
+            //Renders search box.
             React.createElement(
                 'div',
-                { className: 'input-group', style: { marginBottom: '20px' } },
-                React.createElement('input', { type: 'search',
-                    value: this.state.inputValue,
-                    onChange: this.handleChange,
-                    className: 'form-control', placeholder: 'Search for a movie, tv show or actor' }),
+                { className: 'col-lg-10 col-md-11 col-sm-12' },
                 React.createElement(
                     'div',
-                    { className: 'input-group-btn' },
-                    React.createElement(
-                        'button',
-                        { type: 'button', className: 'btn btn-secondary dropdown-toggle', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
-                        this.state.selectValue
-                    ),
+                    { className: 'input-group', style: { marginBottom: '20px' } },
+                    React.createElement('input', { type: 'search',
+                        value: this.state.inputValue,
+                        onChange: this.handleChange,
+                        className: 'form-control', placeholder: 'Search for a movie, tv show or actor' }),
                     React.createElement(
                         'div',
-                        { className: 'dropdown-menu dropdown-menu-right' },
+                        { className: 'input-group-btn' },
                         React.createElement(
-                            'a',
-                            { className: 'dropdown-item', onClick: this.handleSelect },
-                            'All'
+                            'button',
+                            { type: 'button', className: 'btn btn-secondary dropdown-toggle', 'data-toggle': 'dropdown', 'aria-haspopup': 'true', 'aria-expanded': 'false' },
+                            this.state.selectValue
                         ),
                         React.createElement(
-                            'a',
-                            { className: 'dropdown-item', onClick: this.handleSelect },
-                            'Movie'
-                        ),
-                        React.createElement(
-                            'a',
-                            { className: 'dropdown-item', onClick: this.handleSelect },
-                            'TV Show'
-                        ),
-                        React.createElement(
-                            'a',
-                            { className: 'dropdown-item', onClick: this.handleSelect },
-                            'Actors'
+                            'div',
+                            { className: 'dropdown-menu dropdown-menu-right' },
+                            React.createElement(
+                                'a',
+                                { className: 'dropdown-item', onClick: this.handleSelect },
+                                'All'
+                            ),
+                            React.createElement(
+                                'a',
+                                { className: 'dropdown-item', onClick: this.handleSelect },
+                                'Movie'
+                            ),
+                            React.createElement(
+                                'a',
+                                { className: 'dropdown-item', onClick: this.handleSelect },
+                                'TV Show'
+                            ),
+                            React.createElement(
+                                'a',
+                                { className: 'dropdown-item', onClick: this.handleSelect },
+                                'Actors'
+                            )
                         )
                     )
-                )
-            ),
-            React.createElement(SearchResults, { searchValue: this.state.searchValue, selectValue: this.state.selectValue })
+                ),
+                React.createElement(SearchResults, { searchValue: this.state.searchValue, selectValue: this.state.selectValue })
+            )
         );
     }
 });
@@ -170,6 +177,7 @@ var SearchResults = React.createClass({
     }
 });
 
+//straight forward class for displaying movies on bootstrap's cards
 var MovieCard = React.createClass({
     displayName: 'MovieCard',
 

@@ -3,11 +3,15 @@ var SearchBar = React.createClass({
         return {inputValue: '', searchValue: '', selectValue: 'All'};
     },
     handleChange: function(event) {
+        //Cut user input to max length of 140 characters.
+        //Don't send API request until the user has stopped typing for 300ms
+        //This way we don't spam their servers every keystroke.
         this.setState({inputValue: event.target.value.substr(0, 140)});
         clearTimeout(this.searchTimeOut);
         this.searchTimeOut = setTimeout(function(){ this.setState({searchValue: this.state.inputValue})}.bind(this), 300)
     },
     handleSelect: function(event) {
+        //Handles search bar dropdown menu.
         if(this.state.selectValue !== event.target.innerHTML){
             this.setState({selectValue: event.target.innerHTML});
         }
@@ -15,26 +19,27 @@ var SearchBar = React.createClass({
     searchTimeOut: setTimeout(function(){}),
     render: function() {
     return (
-            <div className="col-lg-10 col-md-11 col-sm-12">
-                <div className="input-group" style={{marginBottom: '20px'}}>
-                    <input type="search"
-                        value={this.state.inputValue}
-                        onChange={this.handleChange}
-                        className="form-control" placeholder="Search for a movie, tv show or actor" />
-                    <div className="input-group-btn">
-                        <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {this.state.selectValue}
-                        </button>
-                        <div className="dropdown-menu dropdown-menu-right">
-                            <a className="dropdown-item" onClick={this.handleSelect}>All</a>
-                            <a className="dropdown-item" onClick={this.handleSelect}>Movie</a>
-                            <a className="dropdown-item" onClick={this.handleSelect}>TV Show</a>
-                            <a className="dropdown-item" onClick={this.handleSelect}>Actors</a>
-                        </div>
+        //Renders search box.
+        <div className="col-lg-10 col-md-11 col-sm-12">
+            <div className="input-group" style={{marginBottom: '20px'}}>
+                <input type="search"
+                    value={this.state.inputValue}
+                    onChange={this.handleChange}
+                    className="form-control" placeholder="Search for a movie, tv show or actor" />
+                <div className="input-group-btn">
+                    <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {this.state.selectValue}
+                    </button>
+                    <div className="dropdown-menu dropdown-menu-right">
+                        <a className="dropdown-item" onClick={this.handleSelect}>All</a>
+                        <a className="dropdown-item" onClick={this.handleSelect}>Movie</a>
+                        <a className="dropdown-item" onClick={this.handleSelect}>TV Show</a>
+                        <a className="dropdown-item" onClick={this.handleSelect}>Actors</a>
                     </div>
                 </div>
-                <SearchResults searchValue={this.state.searchValue} selectValue={this.state.selectValue}/>
             </div>
+            <SearchResults searchValue={this.state.searchValue} selectValue={this.state.selectValue}/>
+        </div>
         );
     }
 });
@@ -129,6 +134,7 @@ var SearchResults = React.createClass({
     }
 });
 
+//straight forward class for displaying movies on bootstrap's cards
 var MovieCard = React.createClass({
     render: function() {
         return (
@@ -143,7 +149,6 @@ var MovieCard = React.createClass({
         );
     }
 });
-
 
 
 ReactDOM.render(

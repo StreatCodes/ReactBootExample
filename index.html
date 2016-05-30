@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
+    <!-- Squash unused tether dependancy requirement -->
+    <script>
+        window.Tether = function() {}
+    </script>
     <!-- Bootstrap CSS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 
@@ -22,8 +25,8 @@
         <div class="container">
             <div class="nav navbar-nav">
                 <a class="nav-item nav-link active" href="#">Home<span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="#">About</a>
-                <a class="nav-item nav-link" href="#">Code on github</a>
+                <a class="nav-item nav-link" href="#" data-toggle="modal" data-target="#aboutModal">About</a>
+                <a class="nav-item nav-link" href="https://github.com/StreatCodes/ReactBootExample" target="_blank">Code on github</a>
             </div>
         </div>
     </nav>
@@ -46,6 +49,31 @@
 
     <div class="container">
         <div class="row" id="movie-search">
+        </div>
+    </div>
+
+    <!-- About modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="AboutModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">About this website</h4>
+                </div>
+                <div class="modal-body">
+                    <p>I created this website to demonstrate my knowledge of Bootstrap, ReactJS and standard web technologies.</p>
+                    <p>I found 'The Movie Database API' which anyone can use for free if your product is free.
+                        Their API is laid out in such a way that makes it very easy to use.
+                        I used ReactJS to load new data without full page reloads.
+                        Finally I used bootstrap to quickly create an aesthetically pleasing UI</p>
+                    <p>If you're interested in the code it's all freely available on my github, check out the link at the top of the page!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Awesome!</button>
+                </div>
+            </div>
         </div>
     </div>
 
