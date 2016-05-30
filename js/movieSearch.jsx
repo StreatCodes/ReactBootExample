@@ -33,7 +33,7 @@ var SearchBar = React.createClass({
                         </div>
                     </div>
                 </div>
-                <SearchResults searchValue={this.state.searchValue}/>
+                <SearchResults searchValue={this.state.searchValue} selectValue={this.state.selectValue}/>
             </div>
         );
     }
@@ -45,12 +45,38 @@ var SearchResults = React.createClass({
     },
     componentWillReceiveProps: function(nextProps) {
         //If search value changed send movie api request and set loading to true.
-        if (nextProps.searchValue !== this.props.searchValue && nextProps.searchValue !== ""){
+        if (nextProps.searchValue !== this.props.searchValue &&
+            nextProps.searchValue !== "" ||
+            this.props.selectValue !== nextProps.selectValue){
             this.setState({loading: true, searchQuery: nextProps.searchValue});
 
-            var query = "http://api.themoviedb.org/3/search/multi?api_key=1fa14e6c92287ef10dc7a09da28b8f28&language=en&query=" + nextProps.searchValue;
-            $.getJSON( query, function( data ) {
-                console.log(data);
+            //Setup url for search
+            var baseURL = "http://api.themoviedb.org/3/search/";
+            var type = "";
+            var options = "?api_key=1fa14e6c92287ef10dc7a09da28b8f28&language=en&query=";
+
+            switch(nextProps.selectValue){
+                case 'All':
+                    type = "multi"
+                    break;
+                case 'Movie':
+                    type = "movie"
+                    break;
+                case 'TV Show':
+                    type = "tv"
+                    break;
+                case 'Actors':
+                    type = "person"
+                    break;
+                default:
+                    type = "multi"
+                    console.log('Error this should never happen :(');
+            }
+
+            var query = baseURL + type + options + nextProps.searchValue;
+
+            //Submit search query to The Movie Database servers
+            $.getJSON(query , function( data ) {
                 this.setState({loading: false, searchResults: data});
             }.bind(this));
         }
@@ -63,6 +89,7 @@ var SearchResults = React.createClass({
     componentWillUpdate: function(nextProps, nextState) {
     },
     render: function() {
+        //Search bar is empty
         if(this.props.searchValue === ""){
             return (
                 <div style={{textAlign: 'center', color: 'rgb(180, 180, 180)'}}>
@@ -70,6 +97,7 @@ var SearchResults = React.createClass({
                 </div>
             );
         }
+        //Fetching results, display loading
         else if(this.state.loading){
             return (
                 <div style={{textAlign: 'center', color: 'rgb(180, 180, 180)'}}>
@@ -78,20 +106,30 @@ var SearchResults = React.createClass({
             );
         }
         else {
-            return (
-                <div className="card-columns">
-                    {this.state.searchResults.results.map(function(result) {
-                        return <MovieCard key={result.id} data={result}/>;
-                    })}
-                </div>
-            );
+            //Display search results
+            if (this.state.searchResults.results.length > 0){
+                return (
+                    <div className="card-columns">
+                        {this.state.searchResults.results.map(function(result) {
+                            return <MovieCard key={result.id} data={result}/>;
+                        })}
+                    </div>
+                );
+            } else {
+            //No results
+                return (
+                    <div style={{textAlign: 'center', color: 'rgb(180, 180, 180)'}}>
+                        <h3>No results :(</h3>
+                        <p>Try a different search term or type</p>
+                    </div>
+                );
+            }
         }
     }
 });
 
 var MovieCard = React.createClass({
     render: function() {
-        console.log(this.props.data);
         return (
             <div className="card">
                 <img className="card-img-top" style={{width: '100%'}} src={this.props.data.backdrop_path ? "https://image.tmdb.org/t/p/w300/" + this.props.data.backdrop_path : 'images/NoImage.png'} alt="Card image cap" />

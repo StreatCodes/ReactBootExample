@@ -1,8 +1,8 @@
-Make search dropdown work
-Change search query based on dropdown
 Add loading swirl when search request has been sent until response
 Adjust URL when search result received
 
+Move search query check from results to search bar
+Move select switch statement up to search bar???
 Link to github
 About section as Bootstrap tooltip
 Adjust heading text size for smaller devices
