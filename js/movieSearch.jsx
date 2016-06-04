@@ -1,6 +1,6 @@
 var SearchBar = React.createClass({
     getInitialState: function() {
-        return {inputValue: '', searchValue: '', selectValue: 'multi'};
+        return {inputValue: '', searchValue: '', selectValue: 'multi', selectDisplayValue: 'All'};
     },
     handleChange: function(event) {
         //Cut user input to max length of 140 characters.
@@ -38,7 +38,7 @@ var SearchBar = React.createClass({
                     type = "multi"
                     console.log('Error this should never happen :(');
             }
-            this.setState({selectValue: type});
+            this.setState({selectValue: type, selectDisplayValue: event.target.innerHTML});
         }
     },
     searchTimeOut: setTimeout(function(){}),
@@ -53,7 +53,7 @@ var SearchBar = React.createClass({
                     className="form-control" placeholder="Search for a movie, tv show or actor" />
                 <div className="input-group-btn">
                     <button type="button" className="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {this.state.selectValue}
+                        {this.state.selectDisplayValue}
                     </button>
                     <div className="dropdown-menu dropdown-menu-right">
                         <a className="dropdown-item" onClick={this.handleSelect}>All</a>
@@ -77,7 +77,6 @@ var SearchResults = React.createClass({
         //Handle pagination clicks and sets page to new one
         if(page !== this.state.currentPage){
             this.setState({currentPage: page, loading: true});
-            console.log('PAGE SELECTION NUMBER: ' + page);
         }
     },
     apiQuery: function(nextState){
@@ -88,7 +87,6 @@ var SearchResults = React.createClass({
         var page = "&page=" + nextState.currentPage;
 
         var query = baseURL + type + options + nextState.searchQuery + page;
-        console.log('search query: ' + query)
         //Submit search query to The Movie Database servers
         $.getJSON(query , function( data ) {
             this.setState({loading: false, searchResults: data, totalPages: data.total_pages,  currentPage: data.page});
@@ -198,20 +196,121 @@ var Pageination = React.createClass({
 
 //straight forward class for displaying movies on bootstrap's cards
 var MovieCard = React.createClass({
+    getInitialState: function(){
+        return {view: {showModal: false}}
+    },
+    handleHideModal: function(){
+        this.setState({view: {showModal: false}})
+    },
+    handleShowModal: function(){
+        this.setState({view: {showModal: true}})
+    },
     render: function() {
         return (
-            <div className="card">
-                <img className="card-img-top" style={{width: '100%'}} src={this.props.data.backdrop_path ? "https://image.tmdb.org/t/p/w300/" + this.props.data.backdrop_path : 'images/NoImage.png'} alt="Card image cap" />
-                <div className="card-block">
-                    <h4 className="card-title">{this.props.data.name || this.props.data.title}</h4>
-                    <p className="card-text">{this.props.data.overview ? this.props.data.overview.substr(0, 120) + '...' : null}</p>
-                    <p className="card-text"><small class="text-muted">{this.props.data.first_air_date}</small></p>
+            <div>
+                <div className="card" onClick={this.handleShowModal} style={{cursor: 'pointer'}}>
+                    {this.props.data.backdrop_path ? <img className="card-img-top" style={{width: '100%'}} src={"https://image.tmdb.org/t/p/w300/" + this.props.data.backdrop_path} alt="Card image cap" /> : null}
+                    <div className="card-block">
+                        <h4 className="card-title">{this.props.data.name || this.props.data.title}</h4>
+                        <p className="card-text">{this.props.data.overview ? this.props.data.overview.substr(0, 120) + '...' : null}</p>
+                        <p className="card-text"><small className="text-muted">{this.props.data.first_air_date}</small></p>
+                    </div>
                 </div>
+                {this.state.view.showModal ? <MovieModal handleHideModal={this.handleHideModal} data={this.props.data}/> : null}
             </div>
         );
     }
 });
 
+var MovieModal = React.createClass({
+    //Only show bootstrap modal when react element is active.
+    componentDidMount: function(){
+        $(ReactDOM.findDOMNode(this)).modal('show');
+        $(ReactDOM.findDOMNode(this)).on('hidden.bs.modal', this.props.handleHideModal);
+    },
+    render: function() {
+        console.log(this.props.data);
+        var progressColor;
+        var mediaType;
+
+        //Color rating bar
+        switch(true){
+            case this.props.data.vote_average <= 2.5:
+                progressColor = "progress progress-danger";
+                break;
+            case this.props.data.vote_average <= 5.0:
+                progressColor = "progress progress-warning";
+                break;
+            case this.props.data.vote_average <= 7.5:
+                progressColor = "progress progress-info";
+                break;
+            case this.props.data.vote_average <= 10:
+                progressColor = "progress progress-success";
+                break;
+            default:
+                progressColor = null;
+        }
+
+        //Convert media type to a more appropriate format.
+        switch (true) {
+            case this.props.data.media_type === "movie":
+                mediaType = "Movie"
+                break;
+            case this.props.data.media_type === "tv":
+                mediaType = "Tv show"
+                break;
+            case this.props.data.media_type === "person":
+                mediaType = "Actor"
+                break;
+            default:
+                mediaType = null;
+        }
+        return(
+            <div className="modal fade">
+                <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 className="modal-title" style={{display: 'inline-block'}}>{this.props.data.name || this.props.data.title}</h4>
+                            <small className="text-muted" style={{paddingLeft: '10px'}}>{mediaType}</small>
+
+                        </div>
+                        <div className="modal-body" style={{display: 'flex'}}>
+                            <div style={{width: '154px', textAlign: 'center'}}>
+                                {this.props.data.poster_path ?
+                                    <img className="media-object" src={"https://image.tmdb.org/t/p/w154" + this.props.data.poster_path} alt="Poster" />
+                                : null}
+
+                                {this.props.data.profile_path ?
+                                    <img className="media-object" src={"https://image.tmdb.org/t/p/w154" + this.props.data.profile_path} alt="Profile picture" />
+                                : null}
+                                {this.props.data.vote_average ?
+                                    <div>
+                                        <progress className={progressColor} style={{width: '154px', margin: '15px 0 0'}} value={this.props.data.vote_average * 10} max="100">{this.props.data.vote_average}</progress>
+                                        <small className="text-muted">{this.props.data.vote_average + " / 10"}</small><br />
+                                        <small className="text-muted">{"Rated by " + this.props.data.vote_count + " users."}</small>
+                                    </div>
+                                : null}
+                            </div>
+
+                            <div style={{flex: '1', paddingLeft: '15px'}}>
+                                <p>{this.props.data.overview ? this.props.data.overview : null}</p>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+    propTypes:{
+        handleHideModal: React.PropTypes.func.isRequired
+    }
+});
 
 ReactDOM.render(
     <SearchBar />, document.getElementById('movie-search')
